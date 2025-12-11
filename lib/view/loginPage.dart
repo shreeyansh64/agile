@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(_responsive(20)),
                     child: Column(
                       children: [
-                        Spacer(),
+                       Spacer(),
                         Column(
                           children: [
                             Text("Log In", style: AppText.heading1(context)),
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        Spacer(),
+                        SizedBox(height: _responsive(33),),
                         Row(
                           children: [
                             Expanded(
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        Spacer(),
+                        SizedBox(height: _responsive(33),),
                         Column(
                           children: [
                             TextField(
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        Spacer(),
+                        SizedBox(height: _responsive(40),),
                         Column(
                           children: [
                             SizedBox(
