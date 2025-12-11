@@ -1,6 +1,7 @@
 import 'package:agile/view/loginPage.dart';
 import 'package:agile/view/onBoard.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main(){
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        
+        textTheme: GoogleFonts.figtreeTextTheme(),
       ),
       initialRoute: '/login',
       routes: {
