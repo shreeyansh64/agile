@@ -113,15 +113,18 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         SizedBox(height: _responsive(10),),
-                        Text("Forgot password?")
+                        Text("Forgot password?",style: AppText.textButton(context).copyWith(color: Appcolors.white_darker),)
                       ],
                     ),
+                    Spacer()
                   ],
                 ),
               ),
             ),
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+        floatingActionButton: FloatingActionButton(backgroundColor: Appcolors.white_normal_hover,foregroundColor: Appcolors.white_darker,elevation: 0,shape: CircleBorder(),onPressed: (){},child: Icon(Icons.arrow_back),),
       ),
     );
   }
