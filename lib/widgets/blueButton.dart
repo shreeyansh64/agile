@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class BlueButton extends StatelessWidget {
   final String text;
-  const BlueButton({super.key,required this.text});
+  final VoidCallback function;
+  const BlueButton({super.key,required this.text,required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class BlueButton extends StatelessWidget {
             borderRadius: BorderRadiusGeometry.circular(15),
           ),
         ),
-        onPressed: () {},
+        onPressed: function,
         child: Text(
           this.text,
           style: AppText.boldButton(context).copyWith(color: Colors.white),

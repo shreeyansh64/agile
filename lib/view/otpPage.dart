@@ -106,7 +106,7 @@ class _otpPageState extends State<otpPage> {
                     SizedBox(height: _responsive(75)),
                     Column(
                       children: [
-                        BlueButton(text: "Verify OTP"),
+                        BlueButton(text: "Verify OTP",function: (){},),
                         SizedBox(height: _responsive(20),),
                        Align(alignment: Alignment.centerLeft,child:  TextButton(onPressed: () {}, child: Text("Resend OTP",style: AppText.textButton(context).copyWith(color: Appcolors.white_darker),)),)
                       ],

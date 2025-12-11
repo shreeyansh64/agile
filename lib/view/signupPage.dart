@@ -107,7 +107,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                         SizedBox(height: _responsive(55)),
-                        BlueButton(text: "Sign Up"),
+                        BlueButton(text: "Sign Up",function: (){},),
                         Spacer(),
                       ],
                     ),

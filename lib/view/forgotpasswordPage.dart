@@ -95,7 +95,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                     SizedBox(height: _responsive(92)),
-                    BlueButton(text: "Verify Email"),
+                    BlueButton(text: "Verify Email",function: () {
+                      Navigator.pushNamed(context, '/otpPage');
+                    },),
                     Spacer()
                   ],
                 ),

@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: _responsive(40),),
                         Column(
                           children: [
-                            BlueButton(text: "Login"),
+                            BlueButton(text: "Login",function: (){},),
                             SizedBox(height: _responsive(10)),
                             TextButton(onPressed: (){Navigator.pushNamed(context, '/forgotPass');}, child: Text(
                               "Forgot password?",

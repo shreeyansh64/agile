@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.figtreeTextTheme(),
       ),
-      initialRoute: '/otpPage',
+      initialRoute: '/',
       routes: {
         '/':(context)=> OnBoard(),
         '/login':(context)=> LoginPage(),
