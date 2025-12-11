@@ -12,10 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: true,
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white
+        scaffoldBackgroundColor: Colors.white,
+        
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
         '/':(context)=> OnBoard(),
         '/login':(context)=> LoginPage()
