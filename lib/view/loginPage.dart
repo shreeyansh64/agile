@@ -1,6 +1,7 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
+import 'package:agile/widgets/floatBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -152,16 +153,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Appcolors.white_normal_hover,
-          foregroundColor: Appcolors.white_darker,
-          elevation: 0,
-          shape: CircleBorder(),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.arrow_back),
-        ),
+        floatingActionButton: floatBackButton()
       ),
     );
   }
