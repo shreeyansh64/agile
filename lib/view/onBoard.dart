@@ -49,17 +49,41 @@ class OnBoard extends StatelessWidget {
                 width: _responsive(319.58),
                 child: SvgPicture.asset('assets/onbScreen.svg'),
               ),
-              Spacer(),
+              SizedBox(height: _responsive(39),),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: Text('Log In', style: AppText.button(context)),
+                  SizedBox(
+                    height: _responsive(45),
+                    width: _responsive(149),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                       
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10))
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: Text('Log In', style: AppText.button(context).copyWith(fontWeight: FontWeight.bold,color: Colors.black)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: _responsive(45),
+                    width: _responsive(149),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10))
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/signup');
+                      },
+                      child: Text('Sign Up', style: AppText.button(context).copyWith(fontWeight: FontWeight.bold,color: Colors.black)),
+                    ),
                   ),
                 ],
               ),
+              Spacer()
             ],
           ),
         ),
