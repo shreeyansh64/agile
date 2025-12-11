@@ -1,6 +1,7 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
+import 'package:agile/widgets/floatBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/svg.dart';
@@ -117,6 +118,8 @@ class _otpPageState extends State<otpPage> {
             ),
           ],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+        floatingActionButton: floatBackButton(),
       ),
     );
   }
