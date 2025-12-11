@@ -153,12 +153,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             SizedBox(height: _responsive(10)),
-                            Text(
+                            TextButton(onPressed: (){Navigator.pushNamed(context, '/forgotPass');}, child: Text(
                               "Forgot password?",
                               style: AppText.textButton(
                                 context,
                               ).copyWith(color: Appcolors.white_darker),
-                            ),
+                            ),)
                           ],
                         ),
                         Spacer(),

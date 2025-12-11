@@ -1,3 +1,4 @@
+import 'package:agile/view/forgotpasswordPage.dart';
 import 'package:agile/view/loginPage.dart';
 import 'package:agile/view/onBoard.dart';
 import 'package:agile/view/signupPage.dart';
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/':(context)=> OnBoard(),
         '/login':(context)=> LoginPage(),
-        '/signup':(context)=> SignupPage()
+        '/signup':(context)=> SignupPage(),
+        '/forgotPass':(context)=> ForgotPasswordPage()
       },
     );
   }
