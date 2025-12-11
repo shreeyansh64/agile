@@ -1,5 +1,6 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
+import 'package:agile/widgets/blueButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -105,25 +106,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                         SizedBox(height: _responsive(55)),
-                        SizedBox(
-                          height: _responsive(45),
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Appcolors.blue1_normal,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadiusGeometry.circular(15),
-                              ),
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              "Sign Up",
-                              style: AppText.boldButton(
-                                context,
-                              ).copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                        BlueButton(text: "Sign Up"),
                         Spacer(),
                       ],
                     ),
