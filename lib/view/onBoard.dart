@@ -1,14 +1,11 @@
 import 'package:agile/styles/appColors.dart';
+import 'package:agile/styles/appText.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class OnBoard extends StatefulWidget {
+class OnBoard extends StatelessWidget {
   const OnBoard({super.key});
 
-  @override
-  State<OnBoard> createState() => _OnBoardState();
-}
-
-class _OnBoardState extends State<OnBoard> {
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
@@ -17,11 +14,54 @@ class _OnBoardState extends State<OnBoard> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: (){Navigator.pop(context);},
-          icon: CircleAvatar(backgroundColor: Appcolors.black_light_active.withOpacity(0.7),radius: _responsive(32),child: Icon(Icons.arrow_back,color: Appcolors.black_dark,size: _responsive(20),)),
+      backgroundColor: Appcolors.blue1_normal,
+      body: Padding(
+        padding: EdgeInsets.all(_responsive(20)),
+        child: Center(
+          child: Column(
+            children: [
+              Spacer(),
+              SizedBox(
+                width: _responsive(84),
+                height: _responsive(118.13),
+                child: SvgPicture.asset('assets/onbLogo.svg'),
+              ),
+              SizedBox(height: _responsive(16.87)),
+              Column(
+                children: [
+                  Text(
+                    "Manage all your projects",
+                    style: AppText.onboardingHeading(
+                      context,
+                    ).copyWith(color: Appcolors.white_light),
+                  ),
+                  Text(
+                    "on one single board",
+                    style: AppText.onboardingHeading(
+                      context,
+                    ).copyWith(color: Appcolors.white_light),
+                  ),
+                ],
+              ),
+              SizedBox(height: _responsive(25)),
+              SizedBox(
+                height: _responsive(337.01),
+                width: _responsive(319.58),
+                child: SvgPicture.asset('assets/onbScreen.svg'),
+              ),
+              Spacer(),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: Text('Log In', style: AppText.button(context)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

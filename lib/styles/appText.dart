@@ -38,7 +38,7 @@ class AppText {
   
   static TextStyle onboardingHeading(BuildContext context) => TextStyle(
     fontSize: _responsive(context, 20),
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w700,
   );
   
   static TextStyle heading1(BuildContext context) => TextStyle(
