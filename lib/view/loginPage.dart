@@ -176,7 +176,9 @@ class _LoginPageState extends State<LoginPage> {
           foregroundColor: Appcolors.white_darker,
           elevation: 0,
           shape: CircleBorder(),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           child: Icon(Icons.arrow_back),
         ),
       ),
