@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                        Spacer(),
                         Column(
                           children: [
-                            Text("Log In", style: AppText.heading1(context)),
+                            Text("Log In", style: AppText.heading1(context).copyWith(fontWeight: FontWeight.bold)),
                             SizedBox(height: _responsive(40)),
                             SizedBox(
                               height: _responsive(44),

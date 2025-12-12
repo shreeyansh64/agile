@@ -55,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
                         Spacer(),
                         Column(
                           children: [
-                            Text("Sign Up", style: AppText.heading1(context)),
+                            Text("Sign Up", style: AppText.heading1(context).copyWith(fontWeight: FontWeight.bold)),
                             SizedBox(height: _responsive(40)),
                             SizedBox(
                               height: _responsive(44),
