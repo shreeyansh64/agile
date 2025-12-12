@@ -1,26 +1,22 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
-import 'package:agile/widgets/blueButton.dart';
-import 'package:agile/widgets/floatBackButton.dart';
-import 'package:agile/widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ForgotPasswordPage extends StatefulWidget {
-  const ForgotPasswordPage({super.key});
+class ResetpasswordPage extends StatefulWidget {
+  const ResetpasswordPage({super.key});
 
   @override
-  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+  State<ResetpasswordPage> createState() => _ResetpasswordPageState();
 }
 
-class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+class _ResetpasswordPageState extends State<ResetpasswordPage> {
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
       final width = MediaQuery.widthOf(context);
       return (width / 360) * num;
     }
-
     return GestureDetector(
       onTap: (){FocusScope.of(context).unfocus();},
       child: Scaffold(
@@ -44,30 +40,37 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 width: _responsive(73),
               ),
             ),
-            Center(
-              child: Padding(
-                padding: EdgeInsets.all(_responsive(20)),
+            Padding(
+              padding: EdgeInsets.all(_responsive(20)),
+              child: Center(
                 child: Column(
                   children: [
                     Spacer(),
-                    Column(
+                     Column(
                       children: [
                         Text(
-                          "Forgot Your Password?",
+                          "Reset Password",
                           style: AppText.heading2(
                             context,
                           ).copyWith(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: _responsive(9)),
                         Text(
-                          "Don't worry it happens to the best of us. Enter",
+                          "Create a new password to secure your account.",
                           style: AppText.content(context).copyWith(
                             color: Appcolors.white_darker,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
-                          "your email and we'll help you securely reset it.",
+                          "Make sure it's strong and easy for you to",
+                          style: AppText.content(context).copyWith(
+                            color: Appcolors.white_darker,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "remember.",
                           style: AppText.content(context).copyWith(
                             color: Appcolors.white_darker,
                             fontWeight: FontWeight.w500,
@@ -75,22 +78,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: _responsive(86)),
-                    inputField(text: "Email"),
-                    SizedBox(height: _responsive(92)),
-                    BlueButton(text: "Verify Email",function: () {
-                      Navigator.pushNamed(context, '/otpPage');
-                    },),
-                    Spacer()
+                    SizedBox(height: _responsive(45),),
+                    
                   ],
                 ),
               ),
-            ),
+            )
           ],
-          
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: floatBackButton(),
+        )
       ),
     );
   }

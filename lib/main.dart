@@ -2,6 +2,7 @@ import 'package:agile/view/forgotpasswordPage.dart';
 import 'package:agile/view/loginPage.dart';
 import 'package:agile/view/onBoard.dart';
 import 'package:agile/view/otpPage.dart';
+import 'package:agile/view/resetpasswordPage.dart';
 import 'package:agile/view/signupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/login':(context)=> LoginPage(),
         '/signup':(context)=> SignupPage(),
         '/forgotPass':(context)=> ForgotPasswordPage(),
+        '/resetPass':(context)=> ResetpasswordPage(),
         '/otpPage':(context)=> otpPage(),
       },
     );

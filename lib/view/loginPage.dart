@@ -2,6 +2,7 @@ import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
+import 'package:agile/widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -89,45 +90,9 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: _responsive(33),),
                         Column(
                           children: [
-                            TextField(
-                              decoration: InputDecoration(
-                                label: Text("Email"),
-                                labelStyle: TextStyle(color: Colors.black),
-                                fillColor: Appcolors.white_normal_hover,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Appcolors.blue1_normal
-                                  )
-                                )
-                              ),
-                            ),
+                            inputField(text: "Email"),
                             SizedBox(height: _responsive(18)),
-                            TextField(
-                              decoration: InputDecoration(
-                                label: Text("Password"),
-                                labelStyle: TextStyle(color: Colors.black),
-                                fillColor: Appcolors.white_normal_hover,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    width: 2,
-                                    color: Appcolors.blue1_normal
-                                  )
-                                )
-                              ),
-                            ),
+                            inputField(text: "Password")
                           ],
                         ),
                         SizedBox(height: _responsive(40),),
