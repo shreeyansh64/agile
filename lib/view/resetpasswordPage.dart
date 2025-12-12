@@ -1,5 +1,6 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
+import 'package:agile/widgets/passwordField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -79,7 +80,9 @@ class _ResetpasswordPageState extends State<ResetpasswordPage> {
                       ],
                     ),
                     SizedBox(height: _responsive(45),),
-                    
+                    PasswordField(text: "Password"),
+                    SizedBox(height: _responsive(10),),
+                    PasswordField(text: "Confirm Password"),
                   ],
                 ),
               ),

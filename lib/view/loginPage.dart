@@ -3,6 +3,7 @@ import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/inputField.dart';
+import 'package:agile/widgets/passwordField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             inputField(text: "Email"),
                             SizedBox(height: _responsive(18)),
-                            inputField(text: "Password")
+                            PasswordField(text: "Password")
                           ],
                         ),
                         SizedBox(height: _responsive(40),),
