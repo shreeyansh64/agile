@@ -118,7 +118,8 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
           ],
         ),
       ),
-      
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      floatingActionButton: floatBackButton(),
     );
   }
 }
