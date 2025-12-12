@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.figtreeTextTheme(),
       ),
-      initialRoute: '/signupEmail',
+      initialRoute: '/',
       routes: {
         '/':(context)=> OnBoard(),
         '/login':(context)=> LoginPage(),
