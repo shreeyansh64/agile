@@ -1,6 +1,7 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
+import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/passwordField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -92,7 +93,9 @@ class _ResetpasswordPageState extends State<ResetpasswordPage> {
               ),
             )
           ],
-        )
+        ),
+        floatingActionButton: floatBackButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       ),
     );
   }

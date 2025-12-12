@@ -90,7 +90,7 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(height: _responsive(33)),
                         inputField(text: "Email"),
                         SizedBox(height: _responsive(55)),
-                        BlueButton(text: "Sign Up",function: (){},),
+                        BlueButton(text: "Sign Up",function: (){Navigator.pushNamed(context, '/signupEmail');},),
                         Spacer(),
                       ],
                     ),
