@@ -26,6 +26,7 @@ class AuthService {
       final res = LoginResponse.fromJson(response.data);
       var box = await Hive.openBox('auth');
       await box.put('access_token', res.accessToken);
+      await box.put('refresh_token', res.refreshToken);
       _dio.options.headers['Authorization'] = 'Bearer ${res.accessToken}';
       return res;
     } catch (e) {

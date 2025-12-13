@@ -7,6 +7,7 @@ import 'package:agile/view/signupOtpPage.dart';
 import 'package:agile/view/resetpasswordPage.dart';
 import 'package:agile/view/signupEmailPage.dart';
 import 'package:agile/view/signupPage.dart';
+import 'package:agile/view/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,7 +17,6 @@ import 'package:toastification/toastification.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print('Current directory: ${Directory.current.path}');
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
   await Hive.openBox('auth');
@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => OnBoard(),
+        '/splash': (context) => SplashScreen(),
         '/dashboard': (context) => Dashboard(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
