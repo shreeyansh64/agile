@@ -14,12 +14,12 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passController = TextEditingController();
+  final String emailErr = '';
+  final bool emailErrb = false;
 
   @override
   void dispose() {
     emailController.dispose();
-    passController.dispose();
     super.dispose();
   }
 
@@ -97,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                           ],
                         ),
                         SizedBox(height: _responsive(33)),
-                        inputField(text: "Email", controller: emailController,),
+                        inputField(text: "Email", controller: emailController, errorText: emailErr, err: emailErrb,),
                         SizedBox(height: _responsive(55)),
                         BlueButton(text: "Sign Up",function: (){Navigator.pushNamed(context, '/signupEmail');},),
                         Spacer(),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:agile/view/dashboard.dart';
 import 'package:agile/view/forgotpasswordPage.dart';
 import 'package:agile/view/loginPage.dart';
 import 'package:agile/view/onBoard.dart';
@@ -8,9 +11,15 @@ import 'package:agile/view/signupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main()async{
-  await dotenv.load();
+  WidgetsFlutterBinding.ensureInitialized();
+  print('Current directory: ${Directory.current.path}');
+  await dotenv.load(fileName: ".env");
+  await Hive.initFlutter();
+  await Hive.openBox('auth');
   runApp(const MyApp());
 }
 
@@ -28,6 +37,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context)=> OnBoard(),
+        '/dashboard':(context)=> Dashboard(),
         '/login':(context)=> LoginPage(),
         '/signup':(context)=> SignupPage(),
         '/signupEmail':(context)=> SignupEmailPage(),

@@ -16,6 +16,10 @@ class ResetpasswordPage extends StatefulWidget {
 class _ResetpasswordPageState extends State<ResetpasswordPage> {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confPassController = TextEditingController();
+  final String passErr = '';
+  final String confPassErr = '';
+  final bool passErrb = false;
+  final bool confPassErrb = false;
 
   @override
   void dispose() {
@@ -92,9 +96,9 @@ class _ResetpasswordPageState extends State<ResetpasswordPage> {
                       ],
                     ),
                     SizedBox(height: _responsive(45),),
-                    PasswordField(text: "Password", controller: passController,),
+                    PasswordField(text: "Password", controller: passController, errorText: passErr, err: passErrb,),
                     SizedBox(height: _responsive(10),),
-                    PasswordField(text: "Confirm Password", controller: confPassController,),
+                    PasswordField(text: "Confirm Password", controller: confPassController, errorText: confPassErr, err: confPassErrb,),
                     SizedBox(height: _responsive(45),),
                     BlueButton(text: "Reset Password", function: (){}),
                     Spacer()

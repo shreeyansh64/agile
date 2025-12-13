@@ -21,6 +21,14 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
   final TextEditingController passController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController confPassController = TextEditingController();
+  final String emailErr = '';
+  final String usernameErr = '';
+  final String passErr= '';
+  final String confPassErr = '';
+  final bool emailErrb = false;
+  final bool usernameErrb= false;
+  final bool passErrb = false;
+  final bool confPassErrb = false;
 
   @override
   void dispose() {
@@ -75,13 +83,13 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                       ).copyWith(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: _responsive(40)),
-                    inputField(text: "Email", controller: emailController,),
+                    inputField(text: "Email", controller: emailController, errorText: emailErr, err: emailErrb,),
                     SizedBox(height: _responsive(10)),
-                    inputField(text: "Username", controller: usernameController,),
+                    inputField(text: "Username", controller: usernameController, errorText: usernameErr, err: usernameErrb,),
                     SizedBox(height: _responsive(10)),
-                    PasswordField(text: "Password", controller: passController,),
+                    PasswordField(text: "Password", controller: passController, errorText: passErr, err: passErrb,),
                     SizedBox(height: _responsive(10)),
-                    PasswordField(text: "Confirm Password", controller: confPassController,),
+                    PasswordField(text: "Confirm Password", controller: confPassController, errorText: confPassErr, err: confPassErrb,),
                     SizedBox(height: _responsive(10)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,

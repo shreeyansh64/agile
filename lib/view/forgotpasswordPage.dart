@@ -16,6 +16,8 @@ class ForgotPasswordPage extends StatefulWidget {
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   final TextEditingController emailController = TextEditingController();
+  final String emailErr = "";
+  final bool err = false;
 
   @override
   void dispose() {
@@ -85,7 +87,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ],
                     ),
                     SizedBox(height: _responsive(86)),
-                    inputField(text: "Email",controller:emailController),
+                    inputField(text: "Email",controller:emailController, errorText: emailErr, err: err,),
                     SizedBox(height: _responsive(92)),
                     BlueButton(text: "Verify Email",function: () {
                       Navigator.pushNamed(context, '/otpPage');

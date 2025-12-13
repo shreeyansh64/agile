@@ -1,3 +1,6 @@
+import 'package:agile/models/loginRequest.dart';
+import 'package:agile/models/loginResponse.dart';
+import 'package:agile/services/authServices.dart';
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
@@ -6,6 +9,9 @@ import 'package:agile/widgets/inputField.dart';
 import 'package:agile/widgets/passwordField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,6 +24,11 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+  final String emailErr = '';
+  final String passErr = '';
+  final bool emailErrb = true;
+  final bool passErrb = true;
+  final AuthService auth = AuthService();
 
   @override
   void dispose() {
@@ -32,6 +43,18 @@ class _LoginPageState extends State<LoginPage> {
       final width = MediaQuery.widthOf(context);
       return (width / 360) * num;
     }
+
+  Future<void> loginUser() async {
+  try {
+    final res = await auth.login(
+      LoginRequest(username: emailController.text, password: passController.text),
+    );
+    Fluttertoast.showToast(msg: "Logged in successfully!");
+    Navigator.pushReplacementNamed(context, '/dashboard');
+  } catch (e) {
+    Fluttertoast.showToast(msg: "Login failed: $e");
+  }
+}
 
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
@@ -102,15 +125,15 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: _responsive(33),),
                         Column(
                           children: [
-                            inputField(text: "Email", controller: emailController),
+                            inputField(text: "Email", controller: emailController, errorText: emailErr, err: emailErrb,),
                             SizedBox(height: _responsive(18)),
-                            PasswordField(text: "Password", controller: passController)
+                            PasswordField(text: "Password", controller: passController, errorText: passErr, err: passErrb,)
                           ],
                         ),
                         SizedBox(height: _responsive(40),),
                         Column(
                           children: [
-                            BlueButton(text: "Login",function: (){},),
+                            BlueButton(text: "Login",function: (){loginUser();},),
                             SizedBox(height: _responsive(10)),
                             TextButton(onPressed: (){Navigator.pushNamed(context, '/forgotPass');}, child: Text(
                               "Forgot password?",
