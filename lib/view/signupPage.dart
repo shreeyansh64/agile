@@ -15,7 +15,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController emailController = TextEditingController();
   final String emailErr = '';
-  final bool emailErrb = false;
+  final bool emailErrb = true;
 
   @override
   void dispose() {

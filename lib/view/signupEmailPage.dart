@@ -25,10 +25,10 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
   final String usernameErr = '';
   final String passErr= '';
   final String confPassErr = '';
-  final bool emailErrb = false;
-  final bool usernameErrb= false;
-  final bool passErrb = false;
-  final bool confPassErrb = false;
+  final bool emailErrb = true;
+  final bool usernameErrb= true;
+  final bool passErrb = true;
+  final bool confPassErrb = true;
 
   @override
   void dispose() {
