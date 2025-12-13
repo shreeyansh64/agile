@@ -47,21 +47,6 @@ class AuthService {
     }
   }
 
-  Future<VerifyResetOtpResponse> verifyResetOtp(String email, String otp) async {
-  try {
-    final response = await _dio.post(
-      '/api/verify-reset-otp/',
-      data: {
-        "email": email,
-        "otp": otp,
-      },
-    );
-    return VerifyResetOtpResponse.fromJson(response.data);
-  } catch (e) {
-    throw Exception("Could not verify reset OTP: $e");
-  }
-}
-
 
   Future<EmailStatus> emailStatus(String email)async{
     try {
@@ -78,6 +63,28 @@ class AuthService {
     var box = await Hive.openBox('auth');
     return box.get('access_token');
   }
+
+  Future<ResetOtpResponse?> verifyResetOtp(String email, String otp) async {
+  try {
+    final response = await _dio.post(
+      '/api/verify-reset-otp/',
+      data: {
+        'email': email,
+        'otp': otp,
+      },
+    );
+    if (response.statusCode == 200) {
+      return ResetOtpResponse.fromJson(response.data);
+    }
+    return null;
+  } catch (e) {
+    print("Error verifying reset OTP: $e");
+    return null;
+  }
+}
+
+
+
 
   Future<bool> verifyOtp(String email, String otpCode) async {
   try {
