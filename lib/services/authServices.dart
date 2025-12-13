@@ -7,11 +7,11 @@ import 'package:agile/models/signupRequestModel.dart';
 import 'package:agile/models/signupResponseModel.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AuthService {
   final Dio _dio = Dio(BaseOptions(baseUrl: dotenv.env['BASE_URL'] ?? ''));
-
   Future<SignupResponse> signup(SignupRequest request) async {
     try {
       final response = await _dio.post('/api/register/', data: request.toJson());
@@ -83,7 +83,45 @@ class AuthService {
   }
 }
 
-
+  Future<LoginResponse> googleLogin() async {
+  try {
+    final authUrlResponse = await _dio.get('/api/auth/google/login/', 
+      queryParameters: {'platform': 'mobile'}
+    );
+    final authUrl = authUrlResponse.data as String;
+    
+    final result = await FlutterWebAuth2.authenticate(
+      url: authUrl,
+      callbackUrlScheme: 'yourapp',
+    );
+    
+    final uri = Uri.parse(result);
+    final code = uri.queryParameters['code'];
+    final state = uri.queryParameters['state'];
+    
+    if (code == null) throw Exception('No code received');
+    
+    final response = await _dio.post(
+      '/api/auth/google/callback/',
+      queryParameters: {'platform': 'mobile'},
+      data: {
+        'code': code,
+        'state': state,
+      },
+    );
+    
+    final res = LoginResponse.fromJson(response.data);
+    var box = await Hive.openBox('auth');
+    await box.put('access_token', res.accessToken);
+    await box.put('refresh_token', res.refreshToken);
+    _dio.options.headers['Authorization'] = 'Bearer ${res.accessToken}';
+    
+    return res;
+  } catch (e) {
+    print('Google Login Error: $e');
+    throw Exception('Could not login with Google: $e');
+  }
+}
 
 
   Future<bool> verifyOtp(String email, String otpCode) async {
