@@ -1,3 +1,4 @@
+import 'package:agile/models/emailStatusModel.dart';
 import 'package:agile/models/loginRequest.dart';
 import 'package:agile/models/loginResponse.dart';
 import 'package:agile/models/signupRequestModel.dart';
@@ -33,8 +34,37 @@ class AuthService {
     }
   }
 
+  Future<EmailStatus> emailStatus(String email)async{
+    try {
+      final response = await _dio.post('/api/app/pre/',data: {"email": email});
+      print("User : ${response.data['is_email']} , Verification : ${response.data['is_verified']}");
+      return EmailStatus.fromJson(response.data);
+    } catch (e) {
+      print("Error ----> $e");
+      throw Exception("Coundn't get the email Status : $e");
+    }
+  }
+
   Future<String?> getToken() async {
     var box = await Hive.openBox('auth');
     return box.get('access_token');
   }
+
+  Future<bool> verifyOtp(String email, String otpCode) async {
+  try {
+    final response = await _dio.post(
+      '/api/verify-registration/',
+      data: {
+        "email": email,
+        "otp_code": otpCode,
+        "purpose": "registration",
+      },
+    );
+    return response.statusCode == 200;
+  } catch (e) {
+    print("Error verifying OTP: $e");
+    return false;
+  }
+}
+
 }

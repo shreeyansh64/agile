@@ -1,3 +1,4 @@
+import 'package:agile/services/authServices.dart';
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
@@ -5,21 +6,33 @@ import 'package:agile/widgets/floatBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
 import 'package:pinput/pinput.dart';
+import 'package:agile/widgets/toast.dart';
 
-class otpPage extends StatefulWidget {
-  const otpPage({super.key});
+class SignupOtpPage extends StatefulWidget {
+  const SignupOtpPage({super.key});
 
   @override
-  State<otpPage> createState() => _otpPageState();
+  State<SignupOtpPage> createState() => _SignupOtpPageState();
 }
 
-class _otpPageState extends State<otpPage> {
+class _SignupOtpPageState extends State<SignupOtpPage> {
+  final TextEditingController otpController = TextEditingController();
+  final AuthService auth = AuthService();
+  bool isClicked = false;
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double _responsive(num) {
+    double _responsive(num value) {
       final width = MediaQuery.widthOf(context);
-      return (width / 360) * num;
+      return (width / 360) * value;
     }
 
     final otpTheme = PinTheme(
@@ -33,9 +46,7 @@ class _otpPageState extends State<otpPage> {
     );
 
     return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: Stack(
           children: [
@@ -59,7 +70,7 @@ class _otpPageState extends State<otpPage> {
             ),
             Center(
               child: Padding(
-                padding:  EdgeInsets.all(_responsive(20)),
+                padding: EdgeInsets.all(_responsive(20)),
                 child: Column(
                   children: [
                     Spacer(),
@@ -102,13 +113,54 @@ class _otpPageState extends State<otpPage> {
                           color: Appcolors.white_normal_hover,
                         ),
                       ),
+                      onChanged: (value) => otpController.text = value,
                     ),
                     SizedBox(height: _responsive(75)),
                     Column(
                       children: [
-                        BlueButton(text: "Verify OTP",function: (){Navigator.pushNamed(context, '/resetPass');},),
-                        SizedBox(height: _responsive(20),),
-                       Align(alignment: Alignment.centerLeft,child:  TextButton(onPressed: () {}, child: Text("Resend OTP",style: AppText.textButton(context).copyWith(color: Appcolors.white_darker),)),)
+                        isClicked
+                            ? CircularProgressIndicator(
+                                color: Appcolors.blue1_light_active,
+                              )
+                            : BlueButton(
+                                text: "Verify OTP",
+                                function: () async {
+                                  setState(() => isClicked = true);
+                                  try {
+                                    final box = await Hive.openBox('auth');
+                                    final email = box.get('signup_email');
+                                    final res = await auth.verifyOtp(
+                                      email,
+                                      otpController.text.trim(),
+                                    );
+
+                                    if (res) {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/dashboard',
+                                      );
+                                    } else {
+                                      showWrongOtp(context);
+                                    }
+                                  } catch (e) {
+                                    showWrongOtp(context);
+                                  }
+                                  setState(() => isClicked = false);
+                                },
+                              ),
+                        SizedBox(height: _responsive(20)),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Resend OTP",
+                              style: AppText.textButton(
+                                context,
+                              ).copyWith(color: Appcolors.white_darker),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     Spacer(),

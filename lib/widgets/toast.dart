@@ -119,6 +119,33 @@ void showLoginErrorToast(BuildContext context) {
     alignment: Alignment.topRight,
   );
 }
+void showWrongOtp(BuildContext context) {
+  double _responsive(num) {
+    final width = MediaQuery.widthOf(context);
+    return (width / 360) * num;
+  }
+
+  toastification.show(
+    title: Text("Invalid Otp", style: TextStyle(fontWeight: FontWeight.bold)),
+    description: Text("Kindly check the entered otp"),
+    icon: const Icon(Icons.warning, color: Colors.black),
+    backgroundColor: Colors.red.withOpacity(0.2),
+    foregroundColor: Colors.black,
+    padding: EdgeInsets.symmetric(
+      horizontal: _responsive(16),
+      vertical: _responsive(12),
+    ),
+    borderRadius: BorderRadius.circular(10),
+    borderSide: BorderSide(color: Colors.red, width: 1),
+    autoCloseDuration: const Duration(seconds: 3),
+    showProgressBar: true,
+    progressBarTheme: ProgressIndicatorThemeData(
+      linearTrackColor: Colors.red,
+      color: Colors.white.withOpacity(0.4),
+    ),
+    alignment: Alignment.topRight,
+  );
+}
 
 void termsAndCondition(BuildContext context) {
     double _responsive(num) {

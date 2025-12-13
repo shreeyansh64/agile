@@ -12,6 +12,7 @@ import 'package:agile/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
 
 class SignupEmailPage extends StatefulWidget {
   const SignupEmailPage({super.key});
@@ -36,7 +37,6 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
   bool passErrb = true;
   bool confPassErrb = true;
   bool isClicked = false;
-  bool isEqual = false;
 
   final AuthService auth = AuthService();
 
@@ -54,6 +54,7 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
       setState(() {
         isClicked = !isClicked;
       });
+      Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
       print('Error----------------> $e');
       showSignupErrorToast(context);
@@ -197,7 +198,7 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                                 )
                               : BlueButton(
                                   text: "Sign Up",
-                                  function: () {
+                                  function: () async {
                                     setState(() {
                                       isClicked = !isClicked;
                                     });
@@ -243,8 +244,13 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                                         usernameValid &&
                                         passwordValid &&
                                         confPassValid) {
+                                      var box = await Hive.openBox('auth');
+                                      await box.put(
+                                        'signup_email',
+                                        emailController.text.trim(),
+                                      );
                                       signup();
-                                    }else{
+                                    } else {
                                       setState(() {
                                         isClicked = !isClicked;
                                       });

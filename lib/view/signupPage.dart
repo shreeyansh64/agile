@@ -1,8 +1,12 @@
+import 'package:agile/services/authServices.dart';
+import 'package:agile/services/inputRegex.dart';
+import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/inputField.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SignupPage extends StatefulWidget {
@@ -14,8 +18,33 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController emailController = TextEditingController();
-  final String emailErr = '';
-  final bool emailErrb = true;
+  String emailErr = '';
+  bool emailErrb = true;
+  bool isClicked = false;
+  final AuthService auth = AuthService();
+
+  Future<void> emailStatus()async{
+    try {
+      final res = await auth.emailStatus(emailController.text.trim());
+      print('*** OUTPUT : \n ${res.isEmail} and ${res.isVerified}');
+      if (res.isEmail && res.isVerified) {
+        Navigator.pushNamed(context, '/login');
+      }else if(res.isEmail && !res.isVerified){
+        Navigator.pushNamed(context, '/signupOtpPage');
+      }else{
+        Navigator.pushNamed(context, '/signupEmail');
+      }
+      setState(() {
+        isClicked = !isClicked;
+      });
+    } catch (e) {
+      print("Error ----> \n $e");
+      setState(() {
+        isClicked = !isClicked;
+      });
+      throw Exception("Problem Checking emailStatus : \n $e");
+    }
+  }
 
   @override
   void dispose() {
@@ -64,7 +93,12 @@ class _SignupPageState extends State<SignupPage> {
                         Spacer(),
                         Column(
                           children: [
-                            Text("Sign Up", style: AppText.heading1(context).copyWith(fontWeight: FontWeight.bold)),
+                            Text(
+                              "Sign Up",
+                              style: AppText.heading1(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold),
+                            ),
                             SizedBox(height: _responsive(40)),
                             SizedBox(
                               height: _responsive(44),
@@ -97,9 +131,41 @@ class _SignupPageState extends State<SignupPage> {
                           ],
                         ),
                         SizedBox(height: _responsive(33)),
-                        inputField(text: "Email", controller: emailController, errorText: emailErr, err: emailErrb,),
+                        inputField(
+                          text: "Email",
+                          controller: emailController,
+                          errorText: emailErr,
+                          err: emailErrb,
+                        ),
                         SizedBox(height: _responsive(55)),
-                        BlueButton(text: "Sign Up",function: (){Navigator.pushNamed(context, '/signupEmail');},),
+                        isClicked
+                            ? SpinKitThreeBounce(
+                                color: Appcolors.blue1_light_active,
+                              )
+                            : BlueButton(
+                                text: "Sign Up",
+                                function: () {
+                                  setState(() {
+                                    isClicked = !isClicked;
+                                  });
+                                  final emailValid = InputRegex.isEmailValid(
+                                    emailController.text.trim(),
+                                  );
+                                  setState(() {
+                                    emailErrb = emailValid;
+                                    emailErr = emailValid
+                                        ? ''
+                                        : 'Invalid email format or too long (max 15 chars)';
+                                  });
+                                  if (emailValid) {
+                                    emailStatus();
+                                  }else{
+                                    setState(() {
+                                      isClicked = !isClicked;
+                                    });
+                                  }
+                                },
+                              ),
                         Spacer(),
                       ],
                     ),
@@ -110,7 +176,7 @@ class _SignupPageState extends State<SignupPage> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: floatBackButton()
+        floatingActionButton: floatBackButton(),
       ),
     );
   }

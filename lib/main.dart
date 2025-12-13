@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         '/signupEmail': (context) => SignupEmailPage(),
         '/forgotPass': (context) => ForgotPasswordPage(),
         '/resetPass': (context) => ResetpasswordPage(),
-        '/otpPage': (context) => otpPage(),
+        '/signupOtpPage': (context) => SignupOtpPage(),
       },
     );
   }
