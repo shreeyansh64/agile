@@ -17,6 +17,20 @@ class SignupEmailPage extends StatefulWidget {
 class _SignupEmailPageState extends State<SignupEmailPage> {
   bool isChecked = false;
 
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController confPassController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    usernameController.dispose();
+    confPassController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
@@ -61,13 +75,13 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                       ).copyWith(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: _responsive(40)),
-                    inputField(text: "Email"),
+                    inputField(text: "Email", controller: emailController,),
                     SizedBox(height: _responsive(10)),
-                    inputField(text: "Username"),
+                    inputField(text: "Username", controller: usernameController,),
                     SizedBox(height: _responsive(10)),
-                    PasswordField(text: "Password"),
+                    PasswordField(text: "Password", controller: passController,),
                     SizedBox(height: _responsive(10)),
-                    PasswordField(text: "Confirm Password"),
+                    PasswordField(text: "Confirm Password", controller: confPassController,),
                     SizedBox(height: _responsive(10)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,

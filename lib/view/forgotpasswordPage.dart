@@ -14,6 +14,15 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+
+  final TextEditingController emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
@@ -76,7 +85,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ],
                     ),
                     SizedBox(height: _responsive(86)),
-                    inputField(text: "Email"),
+                    inputField(text: "Email",controller:emailController),
                     SizedBox(height: _responsive(92)),
                     BlueButton(text: "Verify Email",function: () {
                       Navigator.pushNamed(context, '/otpPage');

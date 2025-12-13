@@ -15,6 +15,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
@@ -91,9 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: _responsive(33),),
                         Column(
                           children: [
-                            inputField(text: "Email"),
+                            inputField(text: "Email", controller: emailController),
                             SizedBox(height: _responsive(18)),
-                            PasswordField(text: "Password")
+                            PasswordField(text: "Password", controller: passController)
                           ],
                         ),
                         SizedBox(height: _responsive(40),),

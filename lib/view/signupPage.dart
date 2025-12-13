@@ -1,4 +1,3 @@
-import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
@@ -14,6 +13,16 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
@@ -88,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                           ],
                         ),
                         SizedBox(height: _responsive(33)),
-                        inputField(text: "Email"),
+                        inputField(text: "Email", controller: emailController,),
                         SizedBox(height: _responsive(55)),
                         BlueButton(text: "Sign Up",function: (){Navigator.pushNamed(context, '/signupEmail');},),
                         Spacer(),
@@ -104,6 +113,5 @@ class _SignupPageState extends State<SignupPage> {
         floatingActionButton: floatBackButton()
       ),
     );
-    ;
   }
 }
