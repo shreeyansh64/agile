@@ -22,4 +22,23 @@ class ForgotPasswordRequest {
       };
 }
 
+class VerifyResetOtpResponse {
+  final String message;
+  final String resetToken;
+  final int expiresIn;
+
+  VerifyResetOtpResponse({
+    required this.message,
+    required this.resetToken,
+    required this.expiresIn,
+  });
+
+  factory VerifyResetOtpResponse.fromJson(Map<String, dynamic> json) {
+    return VerifyResetOtpResponse(
+      message: json['message'],
+      resetToken: json['reset_token'],
+      expiresIn: json['expires_in'],
+    );
+  }
+}
 

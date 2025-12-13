@@ -47,6 +47,22 @@ class AuthService {
     }
   }
 
+  Future<VerifyResetOtpResponse> verifyResetOtp(String email, String otp) async {
+  try {
+    final response = await _dio.post(
+      '/api/verify-reset-otp/',
+      data: {
+        "email": email,
+        "otp": otp,
+      },
+    );
+    return VerifyResetOtpResponse.fromJson(response.data);
+  } catch (e) {
+    throw Exception("Could not verify reset OTP: $e");
+  }
+}
+
+
   Future<EmailStatus> emailStatus(String email)async{
     try {
       final response = await _dio.post('/api/app/pre/',data: {"email": email});
