@@ -1,3 +1,6 @@
+import 'package:agile/models/signupRequestModel.dart';
+import 'package:agile/services/authServices.dart';
+import 'package:agile/services/inputRegex.dart';
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
@@ -7,6 +10,7 @@ import 'package:agile/widgets/inputField.dart';
 import 'package:agile/widgets/passwordField.dart';
 import 'package:agile/widgets/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SignupEmailPage extends StatefulWidget {
@@ -23,14 +27,42 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
   final TextEditingController passController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController confPassController = TextEditingController();
-  final String emailErr = '';
-  final String usernameErr = '';
-  final String passErr = '';
-  final String confPassErr = '';
-  final bool emailErrb = true;
-  final bool usernameErrb = true;
-  final bool passErrb = true;
-  final bool confPassErrb = true;
+  String emailErr = '';
+  String usernameErr = '';
+  String passErr = '';
+  String confPassErr = '';
+  bool emailErrb = true;
+  bool usernameErrb = true;
+  bool passErrb = true;
+  bool confPassErrb = true;
+  bool isClicked = false;
+  bool isEqual = false;
+
+  final AuthService auth = AuthService();
+
+  Future<void> signup() async {
+    try {
+      final res = await auth.signup(
+        SignupRequest(
+          email: emailController.text.trim(),
+          password: passController.text.trim(),
+          password2: confPassController.text.trim(),
+          username: usernameController.text.trim(),
+        ),
+      );
+      showSignupSuccessToast(context);
+      setState(() {
+        isClicked = !isClicked;
+      });
+    } catch (e) {
+      print('Error----------------> $e');
+      showSignupErrorToast(context);
+      setState(() {
+        isClicked = !isClicked;
+      });
+      throw Exception("Coudn't signup : $e");
+    }
+  }
 
   @override
   void dispose() {
@@ -159,8 +191,72 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                     ),
                     SizedBox(height: _responsive(40)),
                     isChecked
-                    ? BlueButton(text: "Sign Up", function: (){})
-                    : DeadButton(text: "Sign Up", function: (){termsAndCondition(context);}),
+                        ? isClicked
+                              ? SpinKitThreeBounce(
+                                  color: Appcolors.blue1_light_active,
+                                )
+                              : BlueButton(
+                                  text: "Sign Up",
+                                  function: () {
+                                    setState(() {
+                                      isClicked = !isClicked;
+                                    });
+                                    final emailValid = InputRegex.isEmailValid(
+                                      emailController.text.trim(),
+                                    );
+                                    final usernameValid =
+                                        InputRegex.isUsernameValid(
+                                          usernameController.text.trim(),
+                                        );
+                                    final passwordValid =
+                                        InputRegex.isPasswordValid(
+                                          passController.text.trim(),
+                                        );
+                                    final confPassValid =
+                                        passController.text.trim() ==
+                                            confPassController.text.trim() &&
+                                        InputRegex.isPasswordValid(
+                                          confPassController.text.trim(),
+                                        );
+
+                                    setState(() {
+                                      emailErrb = emailValid;
+                                      usernameErrb = usernameValid;
+                                      passErrb = passwordValid;
+                                      confPassErrb = confPassValid;
+
+                                      emailErr = emailValid
+                                          ? ''
+                                          : 'Invalid email or too long (max 15 chars)';
+                                      usernameErr = usernameValid
+                                          ? ''
+                                          : '1-15 letters, numbers, or underscore';
+                                      passErr = passwordValid
+                                          ? ''
+                                          : 'Min 8 chars, 1 uppercase, 1 number, 1 special, max 15';
+                                      confPassErr = confPassValid
+                                          ? ''
+                                          : 'Passwords do not match or invalid';
+                                    });
+
+                                    if (emailValid &&
+                                        usernameValid &&
+                                        passwordValid &&
+                                        confPassValid) {
+                                      signup();
+                                    }else{
+                                      setState(() {
+                                        isClicked = !isClicked;
+                                      });
+                                    }
+                                  },
+                                )
+                        : DeadButton(
+                            text: "Sign Up",
+                            function: () {
+                              termsAndCondition(context);
+                            },
+                          ),
                     Spacer(),
                   ],
                 ),

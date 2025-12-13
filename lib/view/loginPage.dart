@@ -47,25 +47,25 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     Future<void> loginUser() async {
-  try {
-    final res = await auth.login(
-      LoginRequest(
-        username: emailController.text,
-        password: passController.text,
-      ),
-    );
-    showLoginSuccessToast(context);
-    setState(() {
-      isClicked = !isClicked;
-    });
-    Navigator.pushReplacementNamed(context, '/dashboard');
-  } catch (e) {
-    showLoginErrorToast(context);
-    setState(() {
-      isClicked = !isClicked;
-    });
-  }
-}
+      try {
+        final res = await auth.login(
+          LoginRequest(
+            username: emailController.text.trim(),
+            password: passController.text.trim(),
+          ),
+        );
+        showLoginSuccessToast(context);
+        setState(() {
+          isClicked = !isClicked;
+        });
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } catch (e) {
+        showLoginErrorToast(context);
+        setState(() {
+          isClicked = !isClicked;
+        });
+      }
+    }
 
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
@@ -160,16 +160,18 @@ class _LoginPageState extends State<LoginPage> {
                         Column(
                           children: [
                             isClicked
-                            ? SpinKitThreeBounce(color: Appcolors.blue1_normal,)
-                            : BlueButton(
-                              text: "Login",
-                              function: () {
-                                setState(() {
-                                  isClicked = !isClicked;
-                                });
-                                loginUser();
-                              },
-                            ),
+                                ? SpinKitThreeBounce(
+                                    color: Appcolors.blue1_light_active,
+                                  )
+                                : BlueButton(
+                                    text: "Login",
+                                    function: () {
+                                      setState(() {
+                                        isClicked = !isClicked;
+                                      });
+                                      loginUser();
+                                    },
+                                  ),
                             SizedBox(height: _responsive(10)),
                             TextButton(
                               onPressed: () {
