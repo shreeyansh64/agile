@@ -90,7 +90,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     inputField(text: "Email",controller:emailController, errorText: emailErr, err: err,),
                     SizedBox(height: _responsive(92)),
                     BlueButton(text: "Verify Email",function: () {
-                      Navigator.pushNamed(context, '/otpPage');
+                      Navigator.pushNamed(context, '/signupOtpPage');
                     },),
                     Spacer()
                   ],

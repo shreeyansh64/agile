@@ -8,6 +8,7 @@ import 'package:agile/widgets/inputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -144,7 +145,7 @@ class _SignupPageState extends State<SignupPage> {
                               )
                             : BlueButton(
                                 text: "Sign Up",
-                                function: () {
+                                function: ()async {
                                   setState(() {
                                     isClicked = !isClicked;
                                   });
@@ -158,6 +159,11 @@ class _SignupPageState extends State<SignupPage> {
                                         : 'Invalid email format or too long (max 15 chars)';
                                   });
                                   if (emailValid) {
+                                    var box = await Hive.openBox('auth');
+                                      await box.put(
+                                        'signup_email',
+                                        emailController.text.trim(),
+                                      );
                                     emailStatus();
                                   }else{
                                     setState(() {

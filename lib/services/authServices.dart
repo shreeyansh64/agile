@@ -1,6 +1,7 @@
 import 'package:agile/models/emailStatusModel.dart';
 import 'package:agile/models/loginRequest.dart';
 import 'package:agile/models/loginResponse.dart';
+import 'package:agile/models/sendOtpRequest.dart';
 import 'package:agile/models/signupRequestModel.dart';
 import 'package:agile/models/signupResponseModel.dart';
 import 'package:dio/dio.dart';
@@ -66,5 +67,16 @@ class AuthService {
     return false;
   }
 }
+
+Future<bool> resendOtp(SendOtpRequest request) async {
+  try {
+    final response = await _dio.post('/api/resend-otp/', data: request.toJson());
+    return response.statusCode == 200;
+  } catch (e) {
+    print("Resend OTP Error: $e");
+    return false;
+  }
+}
+
 
 }

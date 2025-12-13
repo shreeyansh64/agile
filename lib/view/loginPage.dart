@@ -8,7 +8,7 @@ import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/inputField.dart';
 import 'package:agile/widgets/passwordField.dart';
-import 'package:agile/widgets/toast.dart';
+import 'package:agile/widgets/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';

@@ -1,14 +1,15 @@
+import 'dart:async';
+import 'package:agile/models/sendOtpRequest.dart';
 import 'package:agile/services/authServices.dart';
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:pinput/pinput.dart';
-import 'package:agile/widgets/toast.dart';
+import 'package:agile/widgets/toasts.dart';
 
 class SignupOtpPage extends StatefulWidget {
   const SignupOtpPage({super.key});
@@ -21,11 +22,31 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
   final TextEditingController otpController = TextEditingController();
   final AuthService auth = AuthService();
   bool isClicked = false;
+  bool canResend = true;
+  int resendSeconds = 30;
+  Timer? _resendTimer;
 
   @override
   void dispose() {
     otpController.dispose();
+    _resendTimer?.cancel();
     super.dispose();
+  }
+
+  void startResendTimer() {
+    setState(() {
+      canResend = false;
+      resendSeconds = 30;
+    });
+
+    _resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (resendSeconds == 0) {
+        timer.cancel();
+        setState(() => canResend = true);
+      } else {
+        setState(() => resendSeconds--);
+      }
+    });
   }
 
   @override
@@ -84,7 +105,7 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
                         ),
                         SizedBox(height: _responsive(9)),
                         Text(
-                          "Verify your identiity to continue. Enter the OTP",
+                          "Verify your identity to continue. Enter the OTP",
                           style: AppText.content(context).copyWith(
                             color: Appcolors.white_darker,
                             fontWeight: FontWeight.w500,
@@ -135,6 +156,7 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
                                     );
 
                                     if (res) {
+                                      showSignupSuccessToast(context);
                                       Navigator.pushNamed(
                                         context,
                                         '/dashboard',
@@ -152,12 +174,35 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: canResend
+                                ? () async {
+                                    setState(() => isClicked = true);
+                                    var box = await Hive.openBox('auth');
+                                    final email = box.get('signup_email');
+                                    final success = await auth.resendOtp(
+                                      SendOtpRequest(
+                                        email: email,
+                                        purpose: 'registration',
+                                      ),
+                                    );
+                                    if (success) {
+                                      showResendOtpSuccessToast(context);
+                                      startResendTimer();
+                                    } else {
+                                      resendOtpErr(context);
+                                    }
+                                    setState(() => isClicked = false);
+                                  }
+                                : null,
                             child: Text(
-                              "Resend OTP",
-                              style: AppText.textButton(
-                                context,
-                              ).copyWith(color: Appcolors.white_darker),
+                              canResend
+                                  ? "Resend OTP"
+                                  : "Resend OTP in $resendSeconds s",
+                              style: AppText.textButton(context).copyWith(
+                                color: canResend
+                                    ? Appcolors.white_darker
+                                    : Appcolors.white_darker.withOpacity(0.5),
+                              ),
                             ),
                           ),
                         ),
@@ -170,8 +215,6 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
             ),
           ],
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: floatBackButton(),
       ),
     );
   }
