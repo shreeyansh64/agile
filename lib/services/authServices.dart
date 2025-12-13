@@ -1,4 +1,5 @@
 import 'package:agile/models/emailStatusModel.dart';
+import 'package:agile/models/forgotPasswordModels.dart';
 import 'package:agile/models/loginRequest.dart';
 import 'package:agile/models/loginResponse.dart';
 import 'package:agile/models/sendOtpRequest.dart';
@@ -33,6 +34,16 @@ class AuthService {
       print('Error --------------------------------------------------------------------------> $e');
       print('username: ${request.username} ; password: ${request.password}');
       throw Exception('Could not login: $e');
+    }
+  }
+
+  Future<ForgotPasswordResponse> forgotPassword(ForgotPasswordRequest request) async {
+    try {
+      final response = await _dio.post('/api/forget-password/', data: request.toJson());
+      return ForgotPasswordResponse.fromJson(response.data);
+    } catch (e) {
+      print("Forgot Password Error: $e");
+      throw Exception("Could not send password reset email: $e");
     }
   }
 
