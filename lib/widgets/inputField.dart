@@ -6,6 +6,7 @@ class inputField extends StatefulWidget {
   final TextEditingController controller;
   final String errorText;
   final bool err;
+
   const inputField({
     super.key,
     required this.text,
@@ -23,26 +24,20 @@ class _inputFieldState extends State<inputField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: widget.controller,
-      onChanged: (value) {
-        setState(() {});
-      },
+      onChanged: (value) => setState(() {}),
       decoration: InputDecoration(
         label: Text(widget.text),
-        // errorText: errorText,
-        // errorStyle: AppText.textButton(context).copyWith(color: Colors.red),
         labelStyle: TextStyle(color: Colors.black),
         fillColor: Appcolors.white_normal_hover,
         filled: true,
+        errorText: widget.err ? null : widget.errorText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: widget.err ? Colors.white : Colors.red, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            width: 2,
-            color: widget.err ? Appcolors.blue1_normal : Colors.red,
-          ),
+          borderSide: BorderSide(color: widget.err ? Appcolors.blue1_normal : Colors.red, width: 2),
         ),
       ),
     );

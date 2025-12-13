@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:agile/view/dashboard.dart';
 import 'package:agile/view/forgotpasswordPage.dart';
 import 'package:agile/view/loginPage.dart';
@@ -13,14 +12,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:toastification/toastification.dart';
 
-Future<void> main()async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   print('Current directory: ${Directory.current.path}');
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
   await Hive.openBox('auth');
-  runApp(const MyApp());
+  runApp(
+    ToastificationWrapper(
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -36,14 +40,14 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/':(context)=> OnBoard(),
-        '/dashboard':(context)=> Dashboard(),
-        '/login':(context)=> LoginPage(),
-        '/signup':(context)=> SignupPage(),
-        '/signupEmail':(context)=> SignupEmailPage(),
-        '/forgotPass':(context)=> ForgotPasswordPage(),
-        '/resetPass':(context)=> ResetpasswordPage(),
-        '/otpPage':(context)=> otpPage(),
+        '/': (context) => OnBoard(),
+        '/dashboard': (context) => Dashboard(),
+        '/login': (context) => LoginPage(),
+        '/signup': (context) => SignupPage(),
+        '/signupEmail': (context) => SignupEmailPage(),
+        '/forgotPass': (context) => ForgotPasswordPage(),
+        '/resetPass': (context) => ResetpasswordPage(),
+        '/otpPage': (context) => otpPage(),
       },
     );
   }

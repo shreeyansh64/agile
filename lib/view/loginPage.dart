@@ -1,17 +1,18 @@
 import 'package:agile/models/loginRequest.dart';
 import 'package:agile/models/loginResponse.dart';
 import 'package:agile/services/authServices.dart';
+import 'package:agile/services/inputRegex.dart';
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/inputField.dart';
 import 'package:agile/widgets/passwordField.dart';
+import 'package:agile/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-
+import 'package:toastification/toastification.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,13 +22,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
-  final String emailErr = '';
-  final String passErr = '';
-  final bool emailErrb = true;
-  final bool passErrb = true;
+  String emailErr = '';
+  String passErr = '';
+  bool emailErrb = true;
+  bool passErrb = true;
   final AuthService auth = AuthService();
 
   @override
@@ -44,15 +44,18 @@ class _LoginPageState extends State<LoginPage> {
       return (width / 360) * num;
     }
 
-  Future<void> loginUser() async {
+    Future<void> loginUser() async {
   try {
     final res = await auth.login(
-      LoginRequest(username: emailController.text, password: passController.text),
+      LoginRequest(
+        username: emailController.text,
+        password: passController.text,
+      ),
     );
-    Fluttertoast.showToast(msg: "Logged in successfully!");
+    showLoginSuccessToast(context);
     Navigator.pushReplacementNamed(context, '/dashboard');
   } catch (e) {
-    Fluttertoast.showToast(msg: "Login failed: $e");
+    showLoginErrorToast(context);
   }
 }
 
@@ -87,10 +90,15 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(_responsive(20)),
                     child: Column(
                       children: [
-                       Spacer(),
+                        Spacer(),
                         Column(
                           children: [
-                            Text("Log In", style: AppText.heading1(context).copyWith(fontWeight: FontWeight.bold)),
+                            Text(
+                              "Log In",
+                              style: AppText.heading1(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold),
+                            ),
                             SizedBox(height: _responsive(40)),
                             SizedBox(
                               height: _responsive(44),
@@ -105,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: _responsive(33),),
+                        SizedBox(height: _responsive(33)),
                         Row(
                           children: [
                             Expanded(
@@ -122,25 +130,46 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: _responsive(33),),
+                        SizedBox(height: _responsive(33)),
                         Column(
                           children: [
-                            inputField(text: "Email", controller: emailController, errorText: emailErr, err: emailErrb,),
+                            inputField(
+                              text: "Email",
+                              controller: emailController,
+                              errorText: emailErr,
+                              err: emailErrb,
+                            ),
                             SizedBox(height: _responsive(18)),
-                            PasswordField(text: "Password", controller: passController, errorText: passErr, err: passErrb,)
+                            PasswordField(
+                              text: "Password",
+                              controller: passController,
+                              errorText: passErr,
+                              err: passErrb,
+                            ),
                           ],
                         ),
-                        SizedBox(height: _responsive(40),),
+                        SizedBox(height: _responsive(40)),
                         Column(
                           children: [
-                            BlueButton(text: "Login",function: (){loginUser();},),
+                            BlueButton(
+                              text: "Login",
+                              function: () {
+                                loginUser();
+                              },
+                            ),
+
                             SizedBox(height: _responsive(10)),
-                            TextButton(onPressed: (){Navigator.pushNamed(context, '/forgotPass');}, child: Text(
-                              "Forgot password?",
-                              style: AppText.textButton(
-                                context,
-                              ).copyWith(color: Appcolors.white_darker),
-                            ),)
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/forgotPass');
+                              },
+                              child: Text(
+                                "Forgot password?",
+                                style: AppText.textButton(
+                                  context,
+                                ).copyWith(color: Appcolors.white_darker),
+                              ),
+                            ),
                           ],
                         ),
                         Spacer(),
@@ -153,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        floatingActionButton: floatBackButton()
+        floatingActionButton: floatBackButton(),
       ),
     );
   }
