@@ -1,9 +1,11 @@
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
+import 'package:agile/widgets/deadButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/inputField.dart';
 import 'package:agile/widgets/passwordField.dart';
+import 'package:agile/widgets/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -23,10 +25,10 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
   final TextEditingController confPassController = TextEditingController();
   final String emailErr = '';
   final String usernameErr = '';
-  final String passErr= '';
+  final String passErr = '';
   final String confPassErr = '';
   final bool emailErrb = true;
-  final bool usernameErrb= true;
+  final bool usernameErrb = true;
   final bool passErrb = true;
   final bool confPassErrb = true;
 
@@ -47,7 +49,9 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
     }
 
     return GestureDetector(
-      onTap: (){FocusScope.of(context).unfocus();},
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         body: SizedBox(
           height: MediaQuery.maybeHeightOf(context),
@@ -83,13 +87,33 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                       ).copyWith(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: _responsive(40)),
-                    inputField(text: "Email", controller: emailController, errorText: emailErr, err: emailErrb,),
+                    inputField(
+                      text: "Email",
+                      controller: emailController,
+                      errorText: emailErr,
+                      err: emailErrb,
+                    ),
                     SizedBox(height: _responsive(10)),
-                    inputField(text: "Username", controller: usernameController, errorText: usernameErr, err: usernameErrb,),
+                    inputField(
+                      text: "Username",
+                      controller: usernameController,
+                      errorText: usernameErr,
+                      err: usernameErrb,
+                    ),
                     SizedBox(height: _responsive(10)),
-                    PasswordField(text: "Password", controller: passController, errorText: passErr, err: passErrb,),
+                    PasswordField(
+                      text: "Password",
+                      controller: passController,
+                      errorText: passErr,
+                      err: passErrb,
+                    ),
                     SizedBox(height: _responsive(10)),
-                    PasswordField(text: "Confirm Password", controller: confPassController, errorText: confPassErr, err: confPassErrb,),
+                    PasswordField(
+                      text: "Confirm Password",
+                      controller: confPassController,
+                      errorText: confPassErr,
+                      err: confPassErrb,
+                    ),
                     SizedBox(height: _responsive(10)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +158,9 @@ class _SignupEmailPageState extends State<SignupEmailPage> {
                       ],
                     ),
                     SizedBox(height: _responsive(40)),
-                    BlueButton(text: "Sign Up", function: () {}),
+                    isChecked
+                    ? BlueButton(text: "Sign Up", function: (){})
+                    : DeadButton(text: "Sign Up", function: (){termsAndCondition(context);}),
                     Spacer(),
                   ],
                 ),

@@ -10,6 +10,7 @@ import 'package:agile/widgets/inputField.dart';
 import 'package:agile/widgets/passwordField.dart';
 import 'package:agile/widgets/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toastification/toastification.dart';
@@ -28,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   String passErr = '';
   bool emailErrb = true;
   bool passErrb = true;
+  bool isClicked = false;
   final AuthService auth = AuthService();
 
   @override
@@ -53,9 +55,15 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
     showLoginSuccessToast(context);
+    setState(() {
+      isClicked = !isClicked;
+    });
     Navigator.pushReplacementNamed(context, '/dashboard');
   } catch (e) {
     showLoginErrorToast(context);
+    setState(() {
+      isClicked = !isClicked;
+    });
   }
 }
 
@@ -151,13 +159,17 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: _responsive(40)),
                         Column(
                           children: [
-                            BlueButton(
+                            isClicked
+                            ? SpinKitThreeBounce(color: Appcolors.blue1_normal,)
+                            : BlueButton(
                               text: "Login",
                               function: () {
+                                setState(() {
+                                  isClicked = !isClicked;
+                                });
                                 loginUser();
                               },
                             ),
-
                             SizedBox(height: _responsive(10)),
                             TextButton(
                               onPressed: () {
