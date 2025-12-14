@@ -1,4 +1,4 @@
-# AligeEnv (Flutter App)
+# Alige
 
 This is the **Flutter-based mobile application** for **AligeEnv**, a next-generation project management and collaboration platform.  
 The Flutter app focuses on delivering a smooth, fast, and unified experience across **Android** and **iOS**.
