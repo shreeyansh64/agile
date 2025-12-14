@@ -32,10 +32,10 @@ class _SignupPageState extends State<SignupPage> {
       });
       try {
         await auth.googleLogin();
-        showLoginSuccessToast(context);
+        showSignupSuccessToast(context);
         Navigator.pushReplacementNamed(context, '/dashboard');
       } catch (e) {
-        showLoginErrorToast(context);
+        showSignupErrorToast(context);
       } finally {
         setState(() {
           isClicked = false;
@@ -49,10 +49,10 @@ class _SignupPageState extends State<SignupPage> {
       });
       try {
         await auth.githubLogin();
-        showLoginSuccessToast(context);
+        showSignupSuccessToast(context);
         Navigator.pushReplacementNamed(context, '/dashboard');
       } catch (e) {
-        showLoginErrorToast(context);
+        showSignupErrorToast(context);
       } finally {
         setState(() {
           isClicked = false;
