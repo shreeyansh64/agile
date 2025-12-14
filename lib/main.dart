@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:agile/view/dashboard.dart';
 import 'package:agile/view/forgotpasswordPage.dart';
 import 'package:agile/view/loginPage.dart';
@@ -20,16 +19,19 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await Hive.initFlutter();
-  await Hive.openBox('auth');
+  var box = await Hive.openBox('auth');
+  final token = box.get('access_token');
+  
   runApp(
     ToastificationWrapper(
-      child: const MyApp(),
+      child: MyApp(initialRoute: token != null ? '/dashboard' : '/'),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.figtreeTextTheme(),
       ),
-      initialRoute: '/',
+      initialRoute: initialRoute,
       routes: {
         '/': (context) => OnBoard(),
         '/splash': (context) => SplashScreen(),

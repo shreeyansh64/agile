@@ -165,7 +165,7 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
 
                                     if (res) {
                                       showSignupSuccessToast(context);
-                                      Navigator.pushNamed(
+                                      Navigator.pushReplacementNamed(
                                         context,
                                         '/dashboard',
                                       );
