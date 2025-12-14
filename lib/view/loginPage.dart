@@ -39,28 +39,45 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> googleLoginUser() async {
-  setState(() {
-    isClicked = true;
-  });
-  try {
-    await auth.googleLogin();
-    showLoginSuccessToast(context);
-    Navigator.pushReplacementNamed(context, '/dashboard');
-  } catch (e) {
-    showLoginErrorToast(context);
-  } finally {
-    setState(() {
-      isClicked = false;
-    });
-  }
-}
-
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
       final width = MediaQuery.widthOf(context);
       return (width / 360) * num;
+    }
+
+    Future<void> googleLoginUser() async {
+      setState(() {
+        isClicked = true;
+      });
+      try {
+        await auth.googleLogin();
+        showLoginSuccessToast(context);
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } catch (e) {
+        showLoginErrorToast(context);
+      } finally {
+        setState(() {
+          isClicked = false;
+        });
+      }
+    }
+
+    Future<void> githubLoginUser() async {
+      setState(() {
+        isClicked = true;
+      });
+      try {
+        await auth.githubLogin();
+        showLoginSuccessToast(context);
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } catch (e) {
+        showLoginErrorToast(context);
+      } finally {
+        setState(() {
+          isClicked = false;
+        });
+      }
     }
 
     Future<void> loginUser() async {
@@ -134,10 +151,13 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             SizedBox(height: _responsive(10)),
-                            SizedBox(
-                              height: _responsive(44),
-                              width: _responsive(320),
-                              child: SvgPicture.asset('assets/logGit.svg'),
+                            InkWell(
+                              onTap: githubLoginUser,
+                              child: SizedBox(
+                                height: _responsive(44),
+                                width: _responsive(320),
+                                child: SvgPicture.asset('assets/logGit.svg'),
+                              ),
                             ),
                           ],
                         ),

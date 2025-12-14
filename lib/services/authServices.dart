@@ -14,7 +14,10 @@ class AuthService {
   final Dio _dio = Dio(BaseOptions(baseUrl: dotenv.env['BASE_URL'] ?? ''));
   Future<SignupResponse> signup(SignupRequest request) async {
     try {
-      final response = await _dio.post('/api/register/', data: request.toJson());
+      final response = await _dio.post(
+        '/api/register/',
+        data: request.toJson(),
+      );
       return SignupResponse.fromJson(response.data);
     } catch (e) {
       throw Exception('Could not signup : $e');
@@ -31,15 +34,22 @@ class AuthService {
       _dio.options.headers['Authorization'] = 'Bearer ${res.accessToken}';
       return res;
     } catch (e) {
-      print('Error --------------------------------------------------------------------------> $e');
+      print(
+        'Error --------------------------------------------------------------------------> $e',
+      );
       print('username: ${request.username} ; password: ${request.password}');
       throw Exception('Could not login: $e');
     }
   }
 
-  Future<ForgotPasswordResponse> forgotPassword(ForgotPasswordRequest request) async {
+  Future<ForgotPasswordResponse> forgotPassword(
+    ForgotPasswordRequest request,
+  ) async {
     try {
-      final response = await _dio.post('/api/forget-password/', data: request.toJson());
+      final response = await _dio.post(
+        '/api/forget-password/',
+        data: request.toJson(),
+      );
       return ForgotPasswordResponse.fromJson(response.data);
     } catch (e) {
       print("Forgot Password Error: $e");
@@ -47,11 +57,12 @@ class AuthService {
     }
   }
 
-
-  Future<EmailStatus> emailStatus(String email)async{
+  Future<EmailStatus> emailStatus(String email) async {
     try {
-      final response = await _dio.post('/api/app/pre/',data: {"email": email});
-      print("User : ${response.data['is_email']} , Verification : ${response.data['is_verified']}");
+      final response = await _dio.post('/api/app/pre/', data: {"email": email});
+      print(
+        "User : ${response.data['is_email']} , Verification : ${response.data['is_verified']}",
+      );
       return EmailStatus.fromJson(response.data);
     } catch (e) {
       print("Error ----> $e");
@@ -65,120 +76,153 @@ class AuthService {
   }
 
   Future<ResetOtpResponse?> verifyResetOtp(String email, String otp) async {
-  try {
-    final response = await _dio.post(
-      '/api/verify-reset-otp/',
-      data: {
-        'email': email,
-        'otp': otp,
-      },
-    );
-    if (response.statusCode == 200) {
-      return ResetOtpResponse.fromJson(response.data);
+    try {
+      final response = await _dio.post(
+        '/api/verify-reset-otp/',
+        data: {'email': email, 'otp': otp},
+      );
+      if (response.statusCode == 200) {
+        return ResetOtpResponse.fromJson(response.data);
+      }
+      return null;
+    } catch (e) {
+      print("Error verifying reset OTP: $e");
+      return null;
     }
-    return null;
-  } catch (e) {
-    print("Error verifying reset OTP: $e");
-    return null;
   }
-}
 
   Future<LoginResponse> googleLogin() async {
-  try {
-    final authUrlResponse = await _dio.get('/api/auth/google/login/', 
-      queryParameters: {'platform': 'mobile'}
-    );
-    final authUrl = authUrlResponse.data['authorization_url'] as String;
-    
-    final result = await FlutterWebAuth2.authenticate(
-      url: authUrl,
-      callbackUrlScheme: 'com.agile.app',
-    );
-    
-    final uri = Uri.parse(result);
-    final code = uri.queryParameters['code'];
-    final state = uri.queryParameters['state'];
-    
-    if (code == null) throw Exception('No code received');
-    
-    final response = await _dio.post(
-      '/api/auth/google/callback/',
-      queryParameters: {'platform': 'mobile'},
-      data: {
-        'code': code,
-        'state': state,
-      },
-    );
-    
-    final res = LoginResponse.fromJson(response.data);
-    var box = await Hive.openBox('auth');
-    await box.put('access_token', res.accessToken);
-    await box.put('refresh_token', res.refreshToken);
-    _dio.options.headers['Authorization'] = 'Bearer ${res.accessToken}';
-    
-    return res;
-  } catch (e) {
-    print('Google Login Error: $e');
-    throw Exception('Could not login with Google: $e');
-  }
-}
+    try {
+      final authUrlResponse = await _dio.get(
+        '/api/auth/google/login/',
+        queryParameters: {'platform': 'mobile'},
+      );
+      final authUrl = authUrlResponse.data['authorization_url'] as String;
 
+      final result = await FlutterWebAuth2.authenticate(
+        url: authUrl,
+        callbackUrlScheme: 'com.agile.app',
+      );
+
+      final uri = Uri.parse(result);
+      final code = uri.queryParameters['code'];
+      final state = uri.queryParameters['state'];
+
+      if (code == null) throw Exception('No code received');
+
+      final response = await _dio.post(
+        '/api/auth/google/callback/',
+        queryParameters: {'platform': 'mobile'},
+        data: {'code': code, 'state': state},
+      );
+
+      final res = LoginResponse.fromJson(response.data);
+      var box = await Hive.openBox('auth');
+      await box.put('access_token', res.accessToken);
+      await box.put('refresh_token', res.refreshToken);
+      _dio.options.headers['Authorization'] = 'Bearer ${res.accessToken}';
+
+      return res;
+    } catch (e) {
+      print('Google Login Error: $e');
+      throw Exception('Could not login with Google: $e');
+    }
+  }
+
+  Future<LoginResponse> githubLogin() async {
+    try {
+      final authUrlResponse = await _dio.get(
+        '/api/auth/github/login/',
+        queryParameters: {'platform': 'mobile'},
+      );
+      final authUrl = authUrlResponse.data['authorization_url'] as String;
+
+      final result = await FlutterWebAuth2.authenticate(
+        url: authUrl,
+        callbackUrlScheme: 'com.agile.app',
+      );
+
+      final uri = Uri.parse(result);
+      final code = uri.queryParameters['code'];
+      final state = uri.queryParameters['state'];
+
+      if (code == null) throw Exception('No code received');
+
+      final response = await _dio.post(
+        '/api/auth/github/callback/',
+        queryParameters: {'platform': 'mobile'},
+        data: {'code': code, 'state': state},
+      );
+
+      final res = LoginResponse.fromJson(response.data);
+      var box = await Hive.openBox('auth');
+      await box.put('access_token', res.accessToken);
+      await box.put('refresh_token', res.refreshToken);
+      _dio.options.headers['Authorization'] = 'Bearer ${res.accessToken}';
+
+      return res;
+    } catch (e) {
+      print('GitHub Login Error: $e');
+      throw Exception('Could not login with GitHub: $e');
+    }
+  }
 
   Future<bool> verifyOtp(String email, String otpCode) async {
-  try {
-    print('Sending OTP verification:');
-    print('Email: $email');
-    print('OTP: $otpCode');
-    print('Purpose: registration');
-    
-    final response = await _dio.post(
-      '/api/verify-registration/',
-      data: {
-        "email": email,
-        "otp_code": otpCode,
-        "purpose": "registration",
-      },
-    );
-    
-    print('Response status: ${response.statusCode}');
-    print('Response data: ${response.data}');
-    return response.statusCode == 200;
-  } catch (e) {
-    print("Error verifying OTP: $e");
-    if (e is DioException) {
-      print('Error response: ${e.response?.data}');
-      print('Error status: ${e.response?.statusCode}');
+    try {
+      print('Sending OTP verification:');
+      print('Email: $email');
+      print('OTP: $otpCode');
+      print('Purpose: registration');
+
+      final response = await _dio.post(
+        '/api/verify-registration/',
+        data: {"email": email, "otp_code": otpCode, "purpose": "registration"},
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response data: ${response.data}');
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Error verifying OTP: $e");
+      if (e is DioException) {
+        print('Error response: ${e.response?.data}');
+        print('Error status: ${e.response?.statusCode}');
+      }
+      return false;
     }
-    return false;
   }
-}
 
-Future<bool> completeReset(String resetToken, String password, String password2) async {
-  try {
-    final response = await _dio.put(
-      '/api/complete-reset/',
-      data: {
-        'reset_token': resetToken,
-        'password': password,
-        'password2': password2,
-      },
-    );
-    return response.statusCode == 200;
-  } catch (e) {
-    print("Complete Reset Error: $e");
-    return false;
+  Future<bool> completeReset(
+    String resetToken,
+    String password,
+    String password2,
+  ) async {
+    try {
+      final response = await _dio.put(
+        '/api/complete-reset/',
+        data: {
+          'reset_token': resetToken,
+          'password': password,
+          'password2': password2,
+        },
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Complete Reset Error: $e");
+      return false;
+    }
   }
-}
 
-Future<bool> resendOtp(SendOtpRequest request) async {
-  try {
-    final response = await _dio.post('/api/resend-otp/', data: request.toJson());
-    return response.statusCode == 200;
-  } catch (e) {
-    print("Resend OTP Error: $e");
-    return false;
+  Future<bool> resendOtp(SendOtpRequest request) async {
+    try {
+      final response = await _dio.post(
+        '/api/resend-otp/',
+        data: request.toJson(),
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      print("Resend OTP Error: $e");
+      return false;
+    }
   }
-}
-
-
 }

@@ -5,6 +5,7 @@ import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/inputField.dart';
+import 'package:agile/widgets/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,6 +24,41 @@ class _SignupPageState extends State<SignupPage> {
   bool emailErrb = true;
   bool isClicked = false;
   final AuthService auth = AuthService();
+
+
+  Future<void> googleLoginUser() async {
+      setState(() {
+        isClicked = true;
+      });
+      try {
+        await auth.googleLogin();
+        showLoginSuccessToast(context);
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } catch (e) {
+        showLoginErrorToast(context);
+      } finally {
+        setState(() {
+          isClicked = false;
+        });
+      }
+    }
+
+    Future<void> githubLoginUser() async {
+      setState(() {
+        isClicked = true;
+      });
+      try {
+        await auth.githubLogin();
+        showLoginSuccessToast(context);
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } catch (e) {
+        showLoginErrorToast(context);
+      } finally {
+        setState(() {
+          isClicked = false;
+        });
+      }
+    }
 
   Future<void> emailStatus()async{
     try {
@@ -101,16 +137,22 @@ class _SignupPageState extends State<SignupPage> {
                               ).copyWith(fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: _responsive(40)),
-                            SizedBox(
-                              height: _responsive(44),
-                              width: _responsive(320),
-                              child: SvgPicture.asset('assets/sigGoo.svg'),
+                            InkWell(
+                              onTap: googleLoginUser,
+                              child: SizedBox(
+                                height: _responsive(44),
+                                width: _responsive(320),
+                                child: SvgPicture.asset('assets/sigGoo.svg'),
+                              ),
                             ),
                             SizedBox(height: _responsive(10)),
-                            SizedBox(
-                              height: _responsive(44),
-                              width: _responsive(320),
-                              child: SvgPicture.asset('assets/sigGit.svg'),
+                            InkWell(
+                              onTap: githubLoginUser,
+                              child: SizedBox(
+                                height: _responsive(44),
+                                width: _responsive(320),
+                                child: SvgPicture.asset('assets/sigGit.svg'),
+                              ),
                             ),
                           ],
                         ),
