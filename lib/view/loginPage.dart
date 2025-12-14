@@ -39,6 +39,23 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Future<void> googleLoginUser() async {
+  setState(() {
+    isClicked = true;
+  });
+  try {
+    await auth.googleLogin();
+    showLoginSuccessToast(context);
+    Navigator.pushReplacementNamed(context, '/dashboard');
+  } catch (e) {
+    showLoginErrorToast(context);
+  } finally {
+    setState(() {
+      isClicked = false;
+    });
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     double _responsive(num) {
@@ -108,10 +125,13 @@ class _LoginPageState extends State<LoginPage> {
                               ).copyWith(fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: _responsive(40)),
-                            SizedBox(
-                              height: _responsive(44),
-                              width: _responsive(320),
-                              child: SvgPicture.asset('assets/logGoo.svg'),
+                            InkWell(
+                              onTap: googleLoginUser,
+                              child: SizedBox(
+                                height: _responsive(44),
+                                width: _responsive(320),
+                                child: SvgPicture.asset('assets/logGoo.svg'),
+                              ),
                             ),
                             SizedBox(height: _responsive(10)),
                             SizedBox(

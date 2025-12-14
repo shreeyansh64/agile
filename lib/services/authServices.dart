@@ -92,7 +92,7 @@ class AuthService {
     
     final result = await FlutterWebAuth2.authenticate(
       url: authUrl,
-      callbackUrlScheme: 'yourapp',
+      callbackUrlScheme: 'com.agile.app',
     );
     
     final uri = Uri.parse(result);
@@ -126,6 +126,11 @@ class AuthService {
 
   Future<bool> verifyOtp(String email, String otpCode) async {
   try {
+    print('Sending OTP verification:');
+    print('Email: $email');
+    print('OTP: $otpCode');
+    print('Purpose: registration');
+    
     final response = await _dio.post(
       '/api/verify-registration/',
       data: {
@@ -134,9 +139,16 @@ class AuthService {
         "purpose": "registration",
       },
     );
+    
+    print('Response status: ${response.statusCode}');
+    print('Response data: ${response.data}');
     return response.statusCode == 200;
   } catch (e) {
     print("Error verifying OTP: $e");
+    if (e is DioException) {
+      print('Error response: ${e.response?.data}');
+      print('Error status: ${e.response?.statusCode}');
+    }
     return false;
   }
 }

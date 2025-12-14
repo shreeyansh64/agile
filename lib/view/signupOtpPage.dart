@@ -150,10 +150,18 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
                                   try {
                                     final box = await Hive.openBox('auth');
                                     final email = box.get('signup_email');
+
+                                    print('Email from Hive: $email');
+                                    print(
+                                      'OTP entered: ${otpController.text.trim()}',
+                                    );
+
                                     final res = await auth.verifyOtp(
                                       email,
                                       otpController.text.trim(),
                                     );
+
+                                    print('Verify OTP response: $res');
 
                                     if (res) {
                                       showSignupSuccessToast(context);
@@ -165,6 +173,7 @@ class _SignupOtpPageState extends State<SignupOtpPage> {
                                       showWrongOtp(context);
                                     }
                                   } catch (e) {
+                                    print('OTP Verification Error: $e');
                                     showWrongOtp(context);
                                   }
                                   setState(() => isClicked = false);
