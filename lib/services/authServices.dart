@@ -88,7 +88,7 @@ class AuthService {
     final authUrlResponse = await _dio.get('/api/auth/google/login/', 
       queryParameters: {'platform': 'mobile'}
     );
-    final authUrl = authUrlResponse.data as String;
+    final authUrl = authUrlResponse.data['authorization_url'] as String;
     
     final result = await FlutterWebAuth2.authenticate(
       url: authUrl,
