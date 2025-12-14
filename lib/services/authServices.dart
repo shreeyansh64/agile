@@ -153,6 +153,23 @@ class AuthService {
   }
 }
 
+Future<bool> completeReset(String resetToken, String password, String password2) async {
+  try {
+    final response = await _dio.put(
+      '/api/complete-reset/',
+      data: {
+        'reset_token': resetToken,
+        'password': password,
+        'password2': password2,
+      },
+    );
+    return response.statusCode == 200;
+  } catch (e) {
+    print("Complete Reset Error: $e");
+    return false;
+  }
+}
+
 Future<bool> resendOtp(SendOtpRequest request) async {
   try {
     final response = await _dio.post('/api/resend-otp/', data: request.toJson());

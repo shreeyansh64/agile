@@ -117,8 +117,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     ),
                                   );
                                   var box = await Hive.openBox('auth');
-                                  await box.put('signup_email', res.email);
-                                  Navigator.pushNamed(context, '/signupOtpPage');
+                                  await box.put('reset_email', res.email);
+                                  Navigator.pushNamed(context, '/resetPasswordOtpPage');
                                 } catch (e) {
                                   resendOtpErr(context);
                                 }

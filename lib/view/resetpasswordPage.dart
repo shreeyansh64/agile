@@ -1,10 +1,13 @@
+import 'package:agile/services/authServices.dart';
 import 'package:agile/styles/appColors.dart';
 import 'package:agile/styles/appText.dart';
 import 'package:agile/widgets/blueButton.dart';
 import 'package:agile/widgets/floatBackButton.dart';
 import 'package:agile/widgets/passwordField.dart';
+import 'package:agile/widgets/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive/hive.dart';
 
 class ResetpasswordPage extends StatefulWidget {
   const ResetpasswordPage({super.key});
@@ -16,10 +19,12 @@ class ResetpasswordPage extends StatefulWidget {
 class _ResetpasswordPageState extends State<ResetpasswordPage> {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confPassController = TextEditingController();
-  final String passErr = '';
-  final String confPassErr = '';
-  final bool passErrb = false;
-  final bool confPassErrb = false;
+  final AuthService auth = AuthService();
+  String passErr = '';
+  String confPassErr = '';
+  bool passErrb = true;
+  bool confPassErrb = true;
+  bool isClicked = false;
 
   @override
   void dispose() {
@@ -34,8 +39,11 @@ class _ResetpasswordPageState extends State<ResetpasswordPage> {
       final width = MediaQuery.widthOf(context);
       return (width / 360) * num;
     }
+
     return GestureDetector(
-      onTap: (){FocusScope.of(context).unfocus();},
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Scaffold(
         body: Stack(
           children: [
@@ -63,7 +71,7 @@ class _ResetpasswordPageState extends State<ResetpasswordPage> {
                 child: Column(
                   children: [
                     Spacer(),
-                     Column(
+                    Column(
                       children: [
                         Text(
                           "Reset Password",
@@ -95,17 +103,67 @@ class _ResetpasswordPageState extends State<ResetpasswordPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: _responsive(45),),
-                    PasswordField(text: "Password", controller: passController, errorText: passErr, err: passErrb,),
-                    SizedBox(height: _responsive(10),),
-                    PasswordField(text: "Confirm Password", controller: confPassController, errorText: confPassErr, err: confPassErrb,),
-                    SizedBox(height: _responsive(45),),
-                    BlueButton(text: "Reset Password", function: (){}),
-                    Spacer()
+                    SizedBox(height: _responsive(45)),
+                    PasswordField(
+                      text: "Password",
+                      controller: passController,
+                      errorText: passErr,
+                      err: passErrb,
+                    ),
+                    SizedBox(height: _responsive(10)),
+                    PasswordField(
+                      text: "Confirm Password",
+                      controller: confPassController,
+                      errorText: confPassErr,
+                      err: confPassErrb,
+                    ),
+                    SizedBox(height: _responsive(45)),
+                    isClicked
+                        ? CircularProgressIndicator(
+                            color: Appcolors.blue1_light_active,
+                          )
+                        : BlueButton(
+                            text: "Reset Password",
+                            function: () async {
+                              setState(() => isClicked = true);
+                              if (passController.text !=
+                                  confPassController.text) {
+                                setState(() {
+                                  confPassErrb = false;
+                                  confPassErr = 'Passwords do not match';
+                                  isClicked = false;
+                                });
+                                return;
+                              }
+                              try {
+                                final box = await Hive.openBox('auth');
+                                final resetToken = box.get('reset_token');
+                                final success = await auth.completeReset(
+                                  resetToken,
+                                  passController.text.trim(),
+                                  confPassController.text.trim(),
+                                );
+                                if (success) {
+                                  showPasswordResetSuccessToast(context);
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/login',
+                                    (route) => false,
+                                  );
+                                } else {
+                                  resendOtpErr(context);
+                                }
+                              } catch (e) {
+                                resendOtpErr(context);
+                              }
+                              setState(() => isClicked = false);
+                            },
+                          ),
+                    Spacer(),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
         floatingActionButton: floatBackButton(),

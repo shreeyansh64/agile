@@ -33,6 +33,37 @@ void showLoginSuccessToast(BuildContext context) {
     alignment: Alignment.topRight,
   );
 }
+void showPasswordResetSuccessToast(BuildContext context) {
+  double _responsive(num) {
+    final width = MediaQuery.widthOf(context);
+    return (width / 360) * num;
+  }
+
+  toastification.show(
+    type: ToastificationType.success,
+    style: ToastificationStyle.flat,
+    description: Text(
+      "Password Reset successful!",
+      style: TextStyle(fontWeight: FontWeight.bold),
+    ),
+    icon: const Icon(Icons.check_circle, color: Colors.black),
+    backgroundColor: Colors.green.withOpacity(0.2),
+    foregroundColor: Colors.black,
+    borderSide: BorderSide(color: Colors.green, width: 1),
+    padding: EdgeInsets.symmetric(
+      horizontal: _responsive(16),
+      vertical: _responsive(12),
+    ),
+    borderRadius: BorderRadius.circular(10),
+    autoCloseDuration: const Duration(seconds: 3),
+    showProgressBar: true,
+    progressBarTheme: ProgressIndicatorThemeData(
+      linearTrackColor: Colors.green,
+      color: Colors.white.withOpacity(0.4),
+    ),
+    alignment: Alignment.topRight,
+  );
+}
 void showSignupSuccessToast(BuildContext context) {
   double _responsive(num) {
     final width = MediaQuery.widthOf(context);

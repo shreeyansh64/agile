@@ -3,6 +3,7 @@ import 'package:agile/view/dashboard.dart';
 import 'package:agile/view/forgotpasswordPage.dart';
 import 'package:agile/view/loginPage.dart';
 import 'package:agile/view/onBoard.dart';
+import 'package:agile/view/resetPasswordOtp.dart';
 import 'package:agile/view/signupOtpPage.dart';
 import 'package:agile/view/resetpasswordPage.dart';
 import 'package:agile/view/signupEmailPage.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         '/signupEmail': (context) => SignupEmailPage(),
         '/forgotPass': (context) => ForgotPasswordPage(),
         '/resetPass': (context) => ResetpasswordPage(),
+        '/resetPasswordOtpPage': (context) => ResetPasswordOtpPage(),
         '/signupOtpPage': (context) => SignupOtpPage(),
       },
     );
